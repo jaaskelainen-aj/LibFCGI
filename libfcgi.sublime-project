@@ -1,0 +1,14 @@
+{
+    "folders":
+    [
+        { "path": ".", "folder_exclude_patterns": ["debug", "release"]}
+    ],
+    "build_systems": [
+        { 
+            "name": "Remote Deb", 
+            "shell_cmd": "$project_path/remote-build.sh", 
+            "file_regex": "^(.*):(\\d+):(\\d+):([^\\n]+)",
+            "working_dir": "$project_path"
+        }
+    ]
+}

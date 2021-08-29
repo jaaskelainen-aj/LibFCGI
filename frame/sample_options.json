@@ -1,0 +1,15 @@
+{
+  "# Description": "This file has only fcgi-library options. Application may add its options into same file but obviously it needs to use different section header.",
+  "LibFCGI": {
+    "PageName": "index.bin",
+    "HandlerKey": "pg",
+    "Locales": "en",
+    "DirUpload": "upload/",
+    "SessionKeys": "/opt/www/random_base6.bin",
+    "SessionMaxAge": 1500,
+    "SessionDir": "sessions/",
+    "SessionLogFacility": -1,
+    "LoginCookie": "libfcgi_web_application",
+    "IncludeEditDefault": 0
+  }
+}

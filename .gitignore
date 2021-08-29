@@ -1,0 +1,11 @@
+/attic
+/debug
+/release
+/export
+/cmake-build-debug
+remote-build.sh
+build
+.idea
+.DS_Store
+*.srctrl*
+*.sublime-workspace
