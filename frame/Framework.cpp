@@ -77,10 +77,10 @@ Framework::Framework(const std::string &home_dir, SessionFactoryIF *sf, c4s::con
     // Handling other options
     if(!conf->get_value("LibFCGI","HandlerKey",hk)) {
         syslog(LOG_NOTICE, "Framework::Framework - Missing HandlerKey from configuration. Using 'pg'.");
-        handler_key_hash = fcgi_driver::fnv_64bit_hash("pg", 2, 0);
+        handler_key_hash = fcgi_driver::fnv_64bit_hash("pg", 2);
     }
     else {
-        handler_key_hash = fcgi_driver::fnv_64bit_hash(hk.c_str(), hk.size(), 0);
+        handler_key_hash = fcgi_driver::fnv_64bit_hash(hk.c_str(), hk.size());
     }
     syslog(LOG_DEBUG, "Framework::Framework - handler hash %lx\n", handler_key_hash);
     if(!conf->get_value("LibFCGI","DirUpload",upload_dir)) {
@@ -137,7 +137,7 @@ SessionBase* Framework::initializeRequest(fcgi_driver::Request *req)
     if(!key[0]) {
         return base; // No problem, root page requested with empty query.
     }
-    base->pack.value = fcgi_driver::fnv_64bit_hash(key, strlen(key), 0);
+    base->pack.value = fcgi_driver::fnv_64bit_hash(key, strlen(key));
     // CS_VAPRT_DEBU("Framework::initializeRequest - page key = %lx",base->pack.key);
     return base;
 }

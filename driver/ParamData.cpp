@@ -133,7 +133,7 @@ void ParamData::end_push()
         throw runtime_error("ParamData::end_push - No more room.");
      }
     // Get the key
-    uint64_t k64 = fnv_64bit_hash (key_buffer, key_ndx, 0);
+    uint64_t k64 = fnv_64bit_hash (key_buffer, key_ndx);
     // Finalize the value
     *value_end++=0;
     key_array[key_count]=k64;
@@ -149,7 +149,7 @@ uint64_t ParamData::add(const char *key, size_t keysize, const char *value)
 {
     if(!key || !keysize || key_count >= DRIVER_PARAMKEYS)
         return false;
-    uint64_t k64 = fnv_64bit_hash (key, keysize, 0);
+    uint64_t k64 = fnv_64bit_hash (key, keysize);
     return add(k64, value);
 }
 // -------------------------------------------------------------------------------------------------
@@ -192,7 +192,7 @@ const char *ParamData::get(const char *key, size_t keylen)
 {
     if(!key_count || !key || !key[0] || !keylen)
         return &dummy;
-    uint64_t hash = fnv_64bit_hash(key,keylen, 0);
+    uint64_t hash = fnv_64bit_hash(key,keylen);
     return get(hash);
 }
 // -------------------------------------------------------------------------------------------------
@@ -202,7 +202,7 @@ bool ParamData::get(const char *key, size_t keylen, int &value)
     char *dummy;
     if(!key_count || !key || !key[0] || !keylen)
         return false;
-    uint64_t k64 = fnv_64bit_hash(key,keylen, 0);
+    uint64_t k64 = fnv_64bit_hash(key,keylen);
     for(ndx=0; ndx<key_count; ndx++) {
         if(key_array[ndx] == k64) {
             value = strtol(value_ptr[ndx], &dummy,10);
@@ -216,7 +216,7 @@ bool ParamData::find(const char *key, size_t keylen)
 {
     if(!key_count || !key || !key[0] || !keylen)
         return false;
-    uint64_t k64 = fnv_64bit_hash(key,keylen, 0);
+    uint64_t k64 = fnv_64bit_hash(key,keylen);
     for(size_t ndx=0; ndx<key_count; ndx++) {
         if(key_array[ndx] == k64)
             return true;

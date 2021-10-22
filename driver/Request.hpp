@@ -74,15 +74,16 @@ enum flag_t {
     FLAG_MENACON_SID=0x40
 };
 
-const uint64_t HASH_REQUEST_METHOD = 0x6fcb71284f57af01UL;
-const uint64_t HASH_QUERY_STRING   = 0xc6655389ef49bf38UL;
-const uint64_t HASH_HTTP_COOKIE    = 0xaaaaec4758542619UL;
-const uint64_t HASH_SCRIPT_FILENAME= 0xa0d212d2a8bdaa5fUL;
-const uint64_t HASH_REMOTE_ADDR    = 0x506d3db4bc25ec78UL;
-const uint64_t HASH_REQUEST_URI    = 0xe6431050dfbbb8d0UL;
-const uint64_t HASH_CONTENT_TYPE   = 0x2ba91afc54dc5636UL;
-const uint64_t HASH_USER_AGENT     = 0xb76bea8bf495d108UL;
-const uint64_t HASH_MENACON_SID    = 0xd5b46ba8b918e326UL;
+// Hashes for Fcgi parameters (created with salt 0)
+const uint64_t HASH_REQUEST_METHOD = 0x29757a9d8270bd7dUL;
+const uint64_t HASH_QUERY_STRING   = 0x92d362ad08217974UL;
+const uint64_t HASH_HTTP_COOKIE    = 0xde8d4646556a229dUL;
+const uint64_t HASH_SCRIPT_FILENAME= 0xa38a8ab91c96f4b3UL;
+const uint64_t HASH_REMOTE_ADDR    = 0x16cdaa4fd46416acUL;
+const uint64_t HASH_REQUEST_URI    = 0xffe3f74a97320ad4UL;
+const uint64_t HASH_CONTENT_TYPE   = 0xd3a3629a62e484baUL;
+const uint64_t HASH_USER_AGENT     = 0xac017b9a0ec95c9fUL;
+const uint64_t HASH_MENACON_SID    = 0xc576eb46c30162UL;
 
 enum class HandlerEvent { IDLE, RELOAD };
 

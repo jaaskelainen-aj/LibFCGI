@@ -5,6 +5,7 @@
  * License: http://www.gnu.org/licenses/lgpl-2.1.html
  */
 #include <stdint.h>
+#include <cstdlib>
 #include <cpp4scripts.hpp>
 
 using namespace c4s;
@@ -14,10 +15,10 @@ using namespace c4s;
 program_arguments args;
 
 // -------------------------------------------------------------------------------------------------
-int do_hash()
+int do_hash(uint64_t salt)
 {
     string hstr = args.get_value("-hash");
-    cout << "Hash value for "<<hstr<<" = "<<hex<<fcgi_driver::fnv_64bit_hash(hstr.c_str(),hstr.size())<<'\n';
+    cout << "Hash value for "<<hstr<<" = 0x"<<hex<<fcgi_driver::fnv_64bit_hash(hstr.c_str(), hstr.size(), salt)<<"UL\n";
     return 0;
 }
 
@@ -25,11 +26,13 @@ int do_hash()
 int main(int argc, char **argv)
 {
     int rv=0;
+    uint64_t salt = 0;
     path_stack ps;
     cout << "LibFCGI build program\n";
 
     args += argument("-deb",   false, "Sets the debug mode.");
     args += argument("-rel",   false, "Sets the release mode.");
+    args += argument("--salt", true,  "Use given 64bit hex as salt for fnv_64bit_hash");
     args += argument("-export", true, "Export project files [ccdb|cmake]");
     args += argument("-ut",    false, "Enables unit test build.");
     args += argument("-V",     false, "Enable verbose build");
@@ -43,8 +46,11 @@ int main(int argc, char **argv)
         args.usage();
         return 1;
     }
-    if(args.is_set("-hash"))
-        return do_hash();
+    if(args.is_set("-hash")) {
+        if(args.is_set("--salt"))
+            salt = strtoull(args.get_value("--salt").c_str(), 0, 16);
+        return do_hash(salt);
+    }
     if(args.is_set("-clean")){
         path dd("./debug/");
         path rd("./release/");

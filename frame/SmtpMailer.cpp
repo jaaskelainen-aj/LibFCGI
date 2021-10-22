@@ -273,6 +273,7 @@ bool SmtpMailer::send(SmtpMsg *msg)
         CS_PRINT_WARN("SmtpMailer::send - transfer list full!");
         return false;
     }
+    CS_VAPRT_NOTE("SmtpMailer::send - Begin sending #%d. Running count %d", ndx, running_count);
     if(!msg->rcpt_list) {
         CS_PRINT_ERRO("SmtpMailer::send - empty recipient list.");
         return false;
@@ -309,7 +310,6 @@ bool SmtpMailer::send(SmtpMsg *msg)
     curl_multi_add_handle(multi, msg->curl);
     curl_multi_perform(multi, &running_count);
 #endif
-    CS_VAPRT_NOTE("SmtpMailer::send - Begin sending #%d. Running count %d", ndx, running_count);
     return true;
 }
 #ifdef UNIT_TEST

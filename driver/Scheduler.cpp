@@ -117,7 +117,9 @@ bool Scheduler::run()
         newfd.revents = 0;
         driver->createRequest(&newfd); // => RQS_PARAMS
     }
-
+#ifdef UNIT_TEST
+    fflush(trace);
+#endif
     // Poll the open connections.
     size_t count = driver->fillPollFd(pfdarray, DRIVER_POLL_FD);
     if(!count) {
@@ -139,7 +141,7 @@ bool Scheduler::run()
     // while reads
     bool rw=false;
     Request *rq;
-    for(int ndx=0; ndx<count; ndx++) {
+    for(size_t ndx=0; ndx<count; ndx++) {
         if( (pfdarray[ndx].revents & POLLIN) > 0) {
             rw = true;
             rq = driver->findRequest(pfdarray[ndx].fd);
@@ -150,7 +152,7 @@ bool Scheduler::run()
     // Work with running requests.
     driver->work();
     // while writes
-    for(int ndx=0; ndx<count; ndx++) {
+    for(size_t ndx=0; ndx<count; ndx++) {
         if( (pfdarray[ndx].revents & POLLOUT) > 0) {
             rw = true;
             rq = driver->findRequest(pfdarray[ndx].fd);

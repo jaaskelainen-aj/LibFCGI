@@ -12,7 +12,6 @@
 #define DRIVER_PARAMNAME 100
 #define DRIVER_MPFIELD 50
 #define DRIVER_POLL_FD 30
-#define DRIVER_FNV64_SALT 0L
 
 // Max values for framework
 #define FRAME_LOCALES 4

@@ -21,7 +21,7 @@ uint64_t fnv_64bit_hash(CC str, size_t len, uint64_t salt)
         char ch[8];
         uint64_t key;
     } pack;
-    uint64_t hash = salt ? salt : DRIVER_FNV64_SALT;
+    uint64_t hash = salt;
     unsigned char *s = (unsigned char *)str;
     if(!str || !len)
         return 0;
