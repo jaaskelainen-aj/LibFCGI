@@ -22,7 +22,7 @@ namespace fcgi_frame
 Includer::Includer(const string &exe_dir, c4s::configuration *conf)
 {
     docroot = exe_dir;
-    if(!conf->get_value("LibFCGI","IncludeEditDefault",(int&)CONF_edit_default))
+    if(!conf->get_value("LibFCGI","IncludeEditDefault",CONF_edit_default))
         CONF_edit_default = 0;
 }
 // -------------------------------------------------------------------------------------------------

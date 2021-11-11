@@ -39,7 +39,7 @@ private:
     void writeSafeHtml(int fd, const char*txt);
     std::string docroot;
 
-    int CONF_edit_default;
+    long CONF_edit_default;
 };
 
 } // namespace fcgi_frame

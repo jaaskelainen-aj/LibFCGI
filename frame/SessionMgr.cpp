@@ -40,7 +40,7 @@ SessionMgr::SessionMgr(const string &exe_dir, const c4s::path &keyfile, SessionF
 
     randfile = keyfile.get_path();
 
-    if(!conf->get_value("LibFCGI","SessionMaxAge", (int&) CONF_max_age)) {
+    if(!conf->get_value("LibFCGI","SessionMaxAge", CONF_max_age)) {
         CONF_max_age = 30*60;
         syslog(LOG_WARNING, "SessionMgr::SessionMgr - Missing config option 'Frame / SessionMaxAge'");
     }

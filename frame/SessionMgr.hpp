@@ -40,8 +40,8 @@ public:
     void logout(fcgi_driver::Request *req);
     void setLanguage(fcgi_driver::Request *req, const char *lc, bool set_session);
     void purge();
-    unsigned int getMaxAge() { return CONF_max_age; }
-    int getFacility() { return CONF_facility; }
+    long getMaxAge() { return CONF_max_age; }
+    long getFacility() { return CONF_facility; }
 
     AppStr* getDefaultLanguage() { return def_lang; }
     MultiStr *locales;
@@ -56,14 +56,13 @@ protected:
     char sid_buf[FRAME_SID+1]{};
 
     std::string randfile;
-    unsigned int CONF_max_age;
+    long CONF_max_age;
+    long CONF_facility;
     c4s::path CONF_session_dir;
 
     SessionFactoryIF *sesfactory;
     AppStr *strings[FRAME_LOCALES]{};
     AppStr *def_lang;
-
-    int CONF_facility;
 };
 
 } // namespace fcgi_frame
