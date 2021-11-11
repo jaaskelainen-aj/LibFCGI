@@ -1,6 +1,6 @@
 /* This file is part of Fast CGI C++ library (libfcgi)
  * https://github.com/jaaskelainen-aj/libfcgi/wiki
- * 
+ *
  * Copyright (c) 2021: Antti Jääskeläinen
  * License: http://www.gnu.org/licenses/lgpl-2.1.html
  */
@@ -10,16 +10,22 @@
 namespace fcgi_frame {
 
 // See http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes for correct codes.
-enum APPSTR_LC {
-    APPSTR_NONE, APPSTR_EN, APPSTR_FI, APPSTR_SV, APPSTR_MAX_LC
+enum APPSTR_LC
+{
+    APPSTR_NONE,
+    APPSTR_EN,
+    APPSTR_FI,
+    APPSTR_SV,
+    APPSTR_MAX_LC
 };
 
 //! Application strings class.
 /*! Class is used to provide I18N feature to programs. Loads strings from the disk to memory and
   allows them to be referenced with a number.*/
 
-class AppStr {
-public:
+class AppStr
+{
+  public:
     //! Constructor loads strings from given file.
     AppStr(const char* filepath, const char* locname);
     //! Free the memory accociated with this language.
@@ -48,11 +54,12 @@ public:
     //! finds ISO-639-1 language code for menacon lib language number.
     static const char* code2lcname(APPSTR_LC);
 
-protected:
+  protected:
     //!\if INTCLASSES
     // ..................................................
-    class ASArray {
-    public:
+    class ASArray
+    {
+      public:
         explicit ASArray(size_t count);
         ~ASArray();
         void add(size_t, const char*, size_t line);
@@ -60,14 +67,15 @@ protected:
 
         size_t size() const { return count; }
 
-    protected:
+      protected:
         char** strarr;
         size_t count;
     };
 
     // ..................................................
-    class ASGroup {
-    public:
+    class ASGroup
+    {
+      public:
         explicit ASGroup(size_t count);
         ~ASGroup();
         void add(size_t, ASArray*, size_t line);
@@ -76,18 +84,19 @@ protected:
         std::string getStdStr(uint16_t ndx) { return std::string(getCPtr(ndx)); }
 
         size_t getTotalCount();
-    protected:
+
+      protected:
         ASArray** groups;
         size_t size;
     };
     //!\endif
 
     size_t count_grp;
-    //char lang[3];
+    // char lang[3];
     APPSTR_LC lcode;
     ASGroup* groups;
 
     static const char* lc_names[FRAME_LOCALES];
 };
-}
+} // namespace fcgi_frame
 #endif

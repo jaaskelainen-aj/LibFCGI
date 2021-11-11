@@ -1,6 +1,6 @@
 /* This file is part of Fast CGI C++ library (libfcgi)
  * https://github.com/jaaskelainen-aj/libfcgi/wiki
- * 
+ *
  * Copyright (c) 2021: Antti Jääskeläinen
  * License: http://www.gnu.org/licenses/lgpl-2.1.html
  */
@@ -12,12 +12,12 @@
 
 using namespace std;
 
-namespace fcgi_frame
-{
+namespace fcgi_frame {
 
-uint16_t ErrorList::next()
+uint16_t
+ErrorList::next()
 {
-    while (cursor<items) {
+    while (cursor < items) {
         if (errtbl[cursor]) {
             return errtbl[cursor];
         }
@@ -26,27 +26,29 @@ uint16_t ErrorList::next()
     return 0;
 }
 // -------------------------------------------------------------------------------------------------
-uint16_t& ErrorList::operator[] (const uint16_t ndx)
+uint16_t& ErrorList::operator[](const uint16_t ndx)
 {
-    if(ndx>=0 && ndx<items)
+    if (ndx >= 0 && ndx < items)
         return errtbl[ndx];
     throw std::runtime_error("ErrorList::operator - index out of bounds");
 }
 // -------------------------------------------------------------------------------------------------
-void ErrorList::append(uint16_t val)
+void
+ErrorList::append(uint16_t val)
 {
-    int ndx=0;
-    while(errtbl[ndx] && ndx<items)
+    int ndx = 0;
+    while (errtbl[ndx] && ndx < items)
         ndx++;
-    if(ndx<items)
-        errtbl[ndx]=val;
+    if (ndx < items)
+        errtbl[ndx] = val;
 }
 // -------------------------------------------------------------------------------------------------
-uint16_t ErrorList::size()
+uint16_t
+ErrorList::size()
 {
-    uint16_t count=0;
+    uint16_t count = 0;
     int ndx;
-    for(ndx=0; ndx<items; ndx++) {
+    for (ndx = 0; ndx < items; ndx++) {
         if (errtbl[ndx]) {
             count++;
         }
@@ -54,40 +56,49 @@ uint16_t ErrorList::size()
     return count;
 }
 // -------------------------------------------------------------------------------------------------
-void ErrorList::print(std::ostringstream &html, AppStr *appstr, const char *clsname)
+void
+ErrorList::print(std::ostringstream& html, AppStr* appstr, const char* clsname)
 {
-    bool firstline=true;
-    html<<"<div class='"<<clsname<<"'><p>\n";
-    for(int ndx=0; ndx<items; ndx++) {
+    bool firstline = true;
+    html << "<div class='" << clsname << "'><p>\n";
+    for (int ndx = 0; ndx < items; ndx++) {
         if (errtbl[ndx]) {
-            if (firstline) firstline=false;
-            else html<<"<br/>\n";
-            html<<appstr->getsp(errtbl[ndx]);
+            if (firstline)
+                firstline = false;
+            else
+                html << "<br/>\n";
+            html << appstr->getsp(errtbl[ndx]);
         }
     }
-    html<<"</p></div>\n";
+    html << "</p></div>\n";
 }
 // -------------------------------------------------------------------------------------------------
-void ErrorList::getText(AppStr *appstr, std::string &buffer)
+void
+ErrorList::getText(AppStr* appstr, std::string& buffer)
 {
-    bool firstline=true;
-    for(int ndx=0; ndx<items; ndx++) {
+    bool firstline = true;
+    for (int ndx = 0; ndx < items; ndx++) {
         if (errtbl[ndx]) {
-            if (firstline) firstline=false;
-            else buffer+="; ";
+            if (firstline)
+                firstline = false;
+            else
+                buffer += "; ";
             buffer += appstr->getsp(errtbl[ndx]);
         }
     }
 }
 // -------------------------------------------------------------------------------------------------
-void ErrorList::getJSON(AppStr *appstr, std::ostream &json)
+void
+ErrorList::getJSON(AppStr* appstr, std::ostream& json)
 {
-    bool firstline=true;
-    json<<"{ \"error\":false, \"message\": \"";
-    for(int ndx=0; ndx<items; ndx++) {
+    bool firstline = true;
+    json << "{ \"error\":false, \"message\": \"";
+    for (int ndx = 0; ndx < items; ndx++) {
         if (errtbl[ndx]) {
-            if (firstline) firstline=false;
-            else json << "; ";
+            if (firstline)
+                firstline = false;
+            else
+                json << "; ";
             json << appstr->getsp(errtbl[ndx]);
         }
     }
