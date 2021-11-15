@@ -5,12 +5,15 @@
  * License: http://www.gnu.org/licenses/lgpl-2.1.html
  */
 #include <stdint.h>
+#include <string>
 #include <cstdlib>
+#include <iostream>
 #include <cpp4scripts.hpp>
 
-using namespace c4s;
-
 #include "driver/fcgidriver.cpp"
+
+using namespace std;
+using namespace c4s;
 
 program_arguments args;
 
@@ -28,7 +31,7 @@ do_hash(uint64_t salt)
 int
 main(int argc, char** argv)
 {
-    int rv = 0;
+    BUILD_STATUS rv = BUILD_STATUS::OK;
     uint64_t salt = 0;
     path_stack ps;
     cout << "LibFCGI build program\n";
@@ -84,12 +87,12 @@ main(int argc, char** argv)
         else
             make->add_comp("-DC4S_LOG_LEVEL=3");
         rv = make->build();
-        if (!rv && args.is_set("-export")) {
+        if (rv == BUILD_STATUS::OK && args.is_set("-export")) {
             path host("/Volumes/menacon/vshare/base7/libfcgi/");
             make->export_prj(args.get_value("-export"), args.exe, host);
         }
     } catch (const c4s_exception& ce) {
         cout << "build failed:" << ce.what() << '\n';
     }
-    return rv;
+    return (int)rv;
 }
