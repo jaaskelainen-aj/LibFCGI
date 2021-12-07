@@ -1069,15 +1069,15 @@ Request::processParams(uint64_t* plimit_hash_list, uint16_t msg_len)
                 }
                 break;
 
-            case HASH_MENACON_SID:
+            case HASH_LIBFCGI_SID:
                 if (nv.value_len == 0)
                     break;
                 valueptr = params.add(paramhash, nv.value_len);
                 if (valueptr) {
                     rbin.read(valueptr, nv.value_len);
                     valueptr[nv.value_len] = 0;
-                    flags.set(FLAG_MENACON_SID);
-                    TRACE("Request::process_params - MenaconSID:%s\n", valueptr);
+                    flags.set(FLAG_LIBFCGI_SID);
+                    TRACE("Request::process_params - LibFCGI_SID:%s\n", valueptr);
                 } else
                     rbin.discard(nv.value_len);
                 break;

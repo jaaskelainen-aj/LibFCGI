@@ -75,7 +75,7 @@ enum flag_t
     FLAG_MULTIP = 0x08,
     FLAG_SPOOLING = 0x10,
     FLAG_BODYDATA = 0x20,
-    FLAG_MENACON_SID = 0x40
+    FLAG_LIBFCGI_SID = 0x40
 };
 
 // Hashes for Fcgi parameters (created with salt 0)
@@ -87,7 +87,7 @@ const uint64_t HASH_REMOTE_ADDR = 0x16cdaa4fd46416acUL;
 const uint64_t HASH_REQUEST_URI = 0xffe3f74a97320ad4UL;
 const uint64_t HASH_CONTENT_TYPE = 0xd3a3629a62e484baUL;
 const uint64_t HASH_USER_AGENT = 0xac017b9a0ec95c9fUL;
-const uint64_t HASH_MENACON_SID = 0xc576eb46c30162UL;
+const uint64_t HASH_LIBFCGI_SID = 0xb385e4a1198c45a1UL;   // "LibFCGI_SID"
 
 enum class HandlerEvent
 {
