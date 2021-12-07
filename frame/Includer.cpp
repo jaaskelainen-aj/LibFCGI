@@ -22,9 +22,12 @@ namespace fcgi_frame {
 
 Includer::Includer(const std::string& exe_dir, c4s::configuration* conf)
 {
+    uint64_t val;
     docroot = exe_dir;
-    if (!conf->get_value("LibFCGI", "IncludeEditDefault", CONF_edit_default))
+    if (!conf->get_value("LibFCGI", "IncludeEditDefault", val))
         CONF_edit_default = 0;
+    else
+        CONF_edit_default = val;
 }
 // -------------------------------------------------------------------------------------------------
 Includer::~Includer() {}

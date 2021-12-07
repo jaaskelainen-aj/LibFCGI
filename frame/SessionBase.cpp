@@ -134,7 +134,7 @@ const char*
 SessionBase::getCookieLogin()
 {
     if (sb_rights)
-        sprintf(g_cookie, "Set-Cookie: %s=%d; SameSite=Strict\r\n", login_cookie, sb_rights);
+        sprintf(g_cookie, "Set-Cookie: %s=%d; Max-Age=%d; SameSite=Strict\r\n", login_cookie, sb_rights, (int) sm->getMaxAge());
     else
         sprintf(g_cookie, "Set-Cookie: %s=0; Max-Age=0; SameSite=Strict\r\n", login_cookie);
     return g_cookie;

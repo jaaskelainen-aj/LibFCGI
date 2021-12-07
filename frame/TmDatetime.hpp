@@ -1,4 +1,4 @@
-/* This file is part of Fast CGI C++ library (libfcgi)
+ /* This file is part of Fast CGI C++ library (libfcgi)
  * https://github.com/jaaskelainen-aj/libfcgi/wiki
  *
  * Copyright (c) 2021: Antti Jääskeläinen

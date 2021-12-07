@@ -33,6 +33,7 @@ SessionMgr::SessionMgr(const string& exe_dir,
                        c4s::configuration* conf)
 {
     string loc_list, session_dir, session_path;
+    uint64_t val;
 
     sesfactory = SIF;
     key_ndx = 0;
@@ -42,25 +43,32 @@ SessionMgr::SessionMgr(const string& exe_dir,
 
     randfile = keyfile.get_path();
 
-    if (!conf->get_value("LibFCGI", "SessionMaxAge", CONF_max_age)) {
+    if (!conf->get_value("LibFCGI", "SessionMaxAge", val)) {
         CONF_max_age = 30 * 60;
         syslog(LOG_WARNING,
-               "SessionMgr::SessionMgr - Missing config option 'Frame / SessionMaxAge'");
+               "SessionMgr::SessionMgr - Missing config option 'LibFCGI / SessionMaxAge'. Using default %ld", CONF_max_age);
+    } else {
+        CONF_max_age = val;
     }
+
     if (!conf->get_value("LibFCGI", "SessionDir", session_dir)) {
         session_dir = "sessions/";
-        syslog(LOG_WARNING, "SessionMgr::SessionMgr - Missing config option 'Frame / SessionDir'");
+        syslog(LOG_WARNING, "SessionMgr::SessionMgr - Missing config option 'LibFCGI / SessionDir'");
     }
-    if (conf->get_value("LibFCGI", "SessionLogFacility", CONF_facility)) {
-        if (CONF_facility >= 0 && CONF_facility <= 7)
-            CONF_facility = LOG_LOCAL0 + (CONF_facility << 3);
+    if (conf->get_value("LibFCGI", "SessionLogFacility", val)) {
+        if (val >= 0 && val <= 7)
+            CONF_facility = LOG_LOCAL0 + (val << 3);
         else {
             CONF_facility = LOG_LOCAL4;
             syslog(LOG_WARNING,
                    "SessionMgr::SessionMgr - Unknown session syslog facility. Using LOCAL4");
         }
-    } else
+    } else {
+#ifdef _DEBUG
+        syslog(LOG_NOTICE, "SessionMgr::SessionMgr - Session logging disabled.");
+#endif
         CONF_facility = 0;
+    }
 
     session_path = exe_dir;
     session_path += session_dir;
@@ -71,7 +79,7 @@ SessionMgr::SessionMgr(const string& exe_dir,
 
     // Optional: If locales option is not found the language files will not be loaded.
     if (!conf->get_value("LibFCGI", "Locales", loc_list)) {
-        syslog(LOG_WARNING, "SessionMgr::SessionMgr - Missing config option 'Frame / Locales'");
+        syslog(LOG_WARNING, "SessionMgr::SessionMgr - Missing config option 'LibFCGI / Locales'");
     } else {
         if (!loc_list.empty())
             locales = new MultiStr(loc_list.c_str(), ",", " ");
@@ -145,8 +153,8 @@ SessionMgr::initializeSession(fcgi_driver::Request* req)
         if (CONF_facility)
             syslog(LOG_MAKEPRI(CONF_facility, LOG_NOTICE),
                    "SessionMgr::initializeSession - Cookie sid:%s\n", sid);
-    } else if (req->is(fcgi_driver::FLAG_MENACON_SID)) {
-        sid = req->params.get(fcgi_driver::HASH_MENACON_SID);
+    } else if (req->is(fcgi_driver::FLAG_LIBFCGI_SID)) {
+        sid = req->params.get(fcgi_driver::HASH_LIBFCGI_SID);
         if (CONF_facility)
             syslog(LOG_MAKEPRI(CONF_facility, LOG_NOTICE),
                    "SessionMgr::initializeSession - Menacon sid:%s\n", sid);
