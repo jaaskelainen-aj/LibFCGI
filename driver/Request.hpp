@@ -82,12 +82,13 @@ enum flag_t
 const uint64_t HASH_REQUEST_METHOD = 0x29757a9d8270bd7dUL;
 const uint64_t HASH_QUERY_STRING = 0x92d362ad08217974UL;
 const uint64_t HASH_HTTP_COOKIE = 0xde8d4646556a229dUL;
-const uint64_t HASH_SCRIPT_FILENAME = 0xa38a8ab91c96f4b3UL;
+const uint64_t HASH_SCRIPT_NAME = 0xbce9f027ff93fbf5UL;
 const uint64_t HASH_REMOTE_ADDR = 0x16cdaa4fd46416acUL;
 const uint64_t HASH_REQUEST_URI = 0xffe3f74a97320ad4UL;
 const uint64_t HASH_CONTENT_TYPE = 0xd3a3629a62e484baUL;
-const uint64_t HASH_USER_AGENT = 0xac017b9a0ec95c9fUL;
-const uint64_t HASH_LIBFCGI_SID = 0xb385e4a1198c45a1UL;   // "LibFCGI_SID"
+// const uint64_t HASH_USER_AGENT = 0xac017b9a0ec95c9fUL;
+const uint64_t HASH_SSL_CLIENT_DN = 0x56c4fa1dd3d1cf89UL;
+const uint64_t HASH_LIBFCGI_SID = 0x7791e62de33fce61UL;
 
 enum class HandlerEvent
 {

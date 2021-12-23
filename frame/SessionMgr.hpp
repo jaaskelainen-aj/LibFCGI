@@ -22,6 +22,7 @@ class SessionFactoryIF
     virtual ~SessionFactoryIF() {}
     virtual SessionBase* createSession(FILE* session_file) = 0;
     virtual int loginSession(fcgi_driver::Request* req) = 0;
+    virtual int loginClientCert(SessionBase* , CC cert_dn) = 0;
     virtual void logoutSession(fcgi_driver::Request* req) = 0;
     virtual void saveSession(FILE* session_file, fcgi_driver::Request* req) = 0;
 };
@@ -65,6 +66,11 @@ class SessionMgr
     SessionFactoryIF* sesfactory;
     AppStr* strings[FRAME_LOCALES]{};
     AppStr* def_lang;
+
+    uint64_t hash_sid;
+    uint64_t hash_page;
+    uint64_t hash_fn;
+    uint64_t hash_lang;
 };
 
 } // namespace fcgi_frame

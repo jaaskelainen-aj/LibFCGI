@@ -21,7 +21,8 @@ class SessionBase
 
     void clear(); // => kplogin=0;
     unsigned long getAge();
-    uint64_t getKey() { return pack.value; }
+    uint64_t getPage() { return page.value; }
+    uint64_t getFn() { return fn.value; }
     void catSID(char* buffer) { memcpy(buffer, sid, FRAME_SID + 1); }
     const char* getHandlerName();
     virtual bool save(FILE*);
@@ -55,7 +56,8 @@ class SessionBase
     AppStr* appstr;
     int locale_ndx;
     bool old;
-    fcgi_driver::PACK64 pack;
+    fcgi_driver::PACK64 page; //! current page i.e. 'page' url parameter value
+    fcgi_driver::PACK64 fn;   //! current page function i.e. 'fn' url parameter value
 
   protected:
     uint32_t sb_rights;

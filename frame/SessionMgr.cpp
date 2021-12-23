@@ -105,6 +105,12 @@ SessionMgr::SessionMgr(const string& exe_dir,
         }
         syslog(LOG_INFO, "SessionMgr::SessionMgr - def_lang %s\n", def_lang ? "OK" : "False");
     }
+
+    // Form hash values for often used parameter searches.
+    hash_sid   = fcgi_driver::fnv_64bit_hash("sid", 3);
+    hash_page  = fcgi_driver::fnv_64bit_hash("pg", 2);
+    hash_fn    = fcgi_driver::fnv_64bit_hash("fn", 2);
+    hash_lang  = fcgi_driver::fnv_64bit_hash("lang", 4);    
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -146,10 +152,10 @@ SessionBase*
 SessionMgr::initializeSession(fcgi_driver::Request* req)
 {
     SessionBase* base = 0;
-    const char* sid = 0;
+    CC sid = 0;
 
     if (req->is(fcgi_driver::FLAG_COOKIE)) {
-        sid = req->params.get("sid", 3);
+        sid = req->params.get(hash_sid);
         if (CONF_facility)
             syslog(LOG_MAKEPRI(CONF_facility, LOG_NOTICE),
                    "SessionMgr::initializeSession - Cookie sid:%s\n", sid);
@@ -157,14 +163,19 @@ SessionMgr::initializeSession(fcgi_driver::Request* req)
         sid = req->params.get(fcgi_driver::HASH_LIBFCGI_SID);
         if (CONF_facility)
             syslog(LOG_MAKEPRI(CONF_facility, LOG_NOTICE),
-                   "SessionMgr::initializeSession - Menacon sid:%s\n", sid);
+                   "SessionMgr::initializeSession - Header sid:%s\n", sid);
     }
     if (!sid || !sid[0]) {
         base = sesfactory->createSession(0);
         base->setSID();
-        if (CONF_facility)
+        if (CONF_facility) {
             syslog(LOG_MAKEPRI(CONF_facility, LOG_NOTICE),
                    "SessionMgr::initializeSession - No cookies persent. New sid:%s\n", base->sid);
+        }
+        CC client_dn = req->params.get(fcgi_driver::HASH_SSL_CLIENT_DN);
+        if(client_dn[0]) {
+            sesfactory->loginClientCert(base, client_dn);
+        }
     } else {
         CONF_session_dir.set_base(sid);
         CONF_session_dir.set_ext(".ses");
@@ -202,8 +213,21 @@ SessionMgr::initializeSession(fcgi_driver::Request* req)
         }
     }
     req->app_data = base;
+    // ....................................................
+    // Parse often used parameters into session base.
+    //
+    base->page.value = 0;
+    base->fn.value = 0;
+    CC page = req->params.get(hash_page);
+    CC fn = req->params.get(hash_fn);
+    if (CONF_facility)
+        syslog(LOG_MAKEPRI(CONF_facility, LOG_DEBUG),
+               "SessionMgr::initializeSession - page: %s; fn: %s\n", page, fn);
+    strncpy(base->page.str, page, 8);
+    strncpy(base->fn.str, fn, 8);
 
-    const char* lang = req->params.get("lang", 4);
+    // CS_VAPRT_DEBU("Framework::initializeRequest - page key = %lx",base->pack.key);
+    const char* lang = req->params.get(hash_lang);
     if (lang[0])
         setLanguage(req, lang, false);
     else {

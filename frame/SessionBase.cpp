@@ -28,7 +28,8 @@ SessionBase::SessionBase()
     memset(sid, 0, sizeof(sid));
     appstr = 0;
     start = time(0);
-    pack.value = 0;
+    page.value = 0;
+    fn.value = 0;
     locale_ndx = 0;
     old = false;
     sb_rights = 0;
@@ -45,7 +46,8 @@ SessionBase::SessionBase(const SessionBase& orig)
     strncpy(sid, orig.sid, sizeof(sid));
     sid[FRAME_SID] = 0;
     start = orig.start;
-    pack.value = orig.pack.value;
+    page.value = orig.page.value;
+    fn.value = orig.fn.value;
     old = orig.old;
     sb_rights = orig.sb_rights;
 }
@@ -81,7 +83,7 @@ SessionBase::dump(int facility)
 
     syslog(LOG_MAKEPRI(facility, LOG_NOTICE),
            "Session : SID = %s; key = %lx; sb_rights = %d; start = %ld; old = %s\n", sid,
-           pack.value, sb_rights, start, (old ? "true" : "false"));
+           page.value, sb_rights, start, (old ? "true" : "false"));
 }
 // -------------------------------------------------------------------------------------------------
 unsigned long
@@ -110,7 +112,7 @@ const char*
 SessionBase::getHandlerName()
 {
     static char name[9];
-    memcpy(name, pack.str, 8);
+    memcpy(name, page.str, 8);
     name[8] = 0;
     return name;
 }

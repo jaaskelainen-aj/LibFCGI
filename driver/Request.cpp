@@ -1077,7 +1077,7 @@ Request::processParams(uint64_t* plimit_hash_list, uint16_t msg_len)
                     rbin.read(valueptr, nv.value_len);
                     valueptr[nv.value_len] = 0;
                     flags.set(FLAG_LIBFCGI_SID);
-                    TRACE("Request::process_params - LibFCGI_SID:%s\n", valueptr);
+                    TRACE("Request::process_params - LIBFCGI_SID:%s\n", valueptr);
                 } else
                     rbin.discard(nv.value_len);
                 break;

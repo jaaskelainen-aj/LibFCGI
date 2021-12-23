@@ -86,7 +86,6 @@ class Framework
     SessionMgr* sesmgr{};
     int session_max{};
     MultiStr cookie_buffer;
-    uint64_t handler_key_hash{};
 
   private:
     Framework(const std::string&, SessionFactoryIF*, c4s::configuration* cf);
