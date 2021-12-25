@@ -9,18 +9,24 @@
 
 namespace fcgi_frame {
 
-//! Class that breaks a string into multiple smaller strins separated by tokens and whitespace.
+const int MAX_MS_TOKENS = 16;
+const int MAX_MS_LEN    = 256;
+
+//! Class that breaks a string into multiple smaller strings separated by tokens and whitespace.
 class MultiStr
 {
   public:
     //! Initializes empty object.
-    MultiStr();
+    MultiStr() { clean(); }
     //! Initializes class by breaking the original string into pieces.
-    MultiStr(const char* orig, const char* token, const char* white);
-    //! Releases reserved memory
-    ~MultiStr();
+    MultiStr(const char* orig, const char* token, const char* white) {
+      if (!set(orig, token, white))
+        clean();
+    }
+    // Empty destructor.
+    ~MultiStr() { }
     //! Replaces earlier content with a new.
-    void set(const char* orig, const char* token, const char* white);
+    bool set(const char* orig, const char* token, const char* white);
     //! Starts iteration and returns pointer to first sub string.
     const char* getFirst();
     //! Continues iteration and returns pointer to next substring.
@@ -30,10 +36,12 @@ class MultiStr
     const char* operator[](size_t ndx) const;
 
   protected:
-    size_t length, max_len;
-    size_t token_count, reserved_offsets;
-    char* multi;
-    const char** offsets;
+    void clean();
+
+    size_t length;
+    size_t token_count;
+    char multi[MAX_MS_LEN];
+    const char* offsets[MAX_MS_TOKENS];
     size_t ndx;
 };
 

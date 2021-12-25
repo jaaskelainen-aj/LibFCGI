@@ -81,8 +81,9 @@ SessionMgr::SessionMgr(const string& exe_dir,
     if (!conf->get_value("LibFCGI", "Locales", loc_list)) {
         syslog(LOG_WARNING, "SessionMgr::SessionMgr - Missing config option 'LibFCGI / Locales'");
     } else {
-        if (!loc_list.empty())
+        if (!loc_list.empty()) {
             locales = new MultiStr(loc_list.c_str(), ",", " ");
+        }
         else {
             syslog(LOG_WARNING, "SessionMgr::SessionMgr - 'Web / Locales' is empty!");
             locales = 0;
