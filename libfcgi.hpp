@@ -25,12 +25,13 @@
 #include "frame/SessionBase.hpp"
 #include "frame/Serializer.hpp"
 #include "frame/ErrorList.hpp"
-#include "frame/SqlInterface.hpp"
-#ifdef WEBMAILER
+#ifdef FCGI_SQL
+  #include "frame/SqlInterface.hpp"
+#endif
+#ifdef FCGI_SMTP
   #include "frame/SmtpMailer.hpp"
 #endif
 #include "frame/PostData.hpp"
-#include "frame/SqlInterface.hpp"
 #include "frame/TmDatetime.hpp"
 
 #endif
