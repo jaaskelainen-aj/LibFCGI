@@ -65,6 +65,14 @@ TmDatetime::setDay1()
 }
 
 void
+TmDatetime::setLastDay()
+{
+    dtv.tm_mon++;
+    dtv.tm_mday = 0;
+    std::mktime(&dtv);
+}
+
+void
 TmDatetime::now()
 {
     time_t now = time(0);

@@ -39,6 +39,7 @@ class TmDatetime
     void thisMonth(); // current month with day=1 and time 00:00
     void nextMonth(int moff = 1);
     void setDay1();
+    void setLastDay();
 
     int getYear() { return dtv.tm_year + 1900; }
     int getMonth() { return dtv.tm_mon + 1; }

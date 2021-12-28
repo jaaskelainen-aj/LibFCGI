@@ -16,7 +16,7 @@ int main(int, char **)
 {
     MultiStr ms;
     const char* str;
-    if(!ms.set("params1=value1&   param2  =  value2 &param3=value3", "&=", " ")) {
+    if(!ms.set("param1=value1&   param2  =  value2 &param3=value3", "&=", " ")) {
         cout << "Unable to parse first test\n";
         return 1;
     }
