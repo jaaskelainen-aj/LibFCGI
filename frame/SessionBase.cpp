@@ -43,7 +43,7 @@ SessionBase::~SessionBase()
 SessionBase::SessionBase(const SessionBase& orig)
 {
     appstr = orig.appstr;
-    strncpy(sid, orig.sid, sizeof(sid));
+    strncpy(sid, orig.sid, FRAME_SID);
     sid[FRAME_SID] = 0;
     start = orig.start;
     page.value = orig.page.value;

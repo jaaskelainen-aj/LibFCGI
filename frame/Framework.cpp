@@ -140,10 +140,13 @@ Framework::beginRequest(fcgi_driver::Request* req,
                         ostringstream* headers)
 {
     // NOTE! PageHandler should have called bufferCatch(req) before this function.
+    SessionBase* base = (SessionBase*)req->app_data;
     if (!type)
         html << "Content-type: text/html\r\n";
     else if (!strcmp(type, "redirect") && cookies) {
         html << "Content-type: text/html\r\n";
+        if (base)
+            html << base->getCookieLogin();
         html << "Location: " << cookies->str() << "\r\n\r\n";
         html << "<html><head><title>Transfer</title></head><body><p>Redirecting...</p></body></"
                 "html>\r\n";
@@ -153,7 +156,6 @@ Framework::beginRequest(fcgi_driver::Request* req,
     }
     if (headers && headers->tellp() > 0)
         html << headers->str();
-    SessionBase* base = (SessionBase*)req->app_data;
     if (base->isSID()) {
         CC cookie;
         if (base->old)
