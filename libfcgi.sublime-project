@@ -6,7 +6,7 @@
     "build_systems": [
         { 
             "name": "Remote Deb", 
-            "shell_cmd": "$project_path/remote-build.sh", 
+            "shell_cmd": "ssh root@menacon2.local 'cd /mnt/hgfs/vshare/base7/libfcgi;./build -deb'", 
             "file_regex": "^(.*):(\\d+):(\\d+):([^\\n]+)",
             "working_dir": "$project_path"
         }

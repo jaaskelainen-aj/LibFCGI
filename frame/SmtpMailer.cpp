@@ -251,8 +251,10 @@ void
 SmtpMailer::clear(bool final)
 {
     for (int ndx = 0; ndx < FRAME_SMTP_MSG; ndx++) {
-        if (transfers[ndx])
+        if (transfers[ndx]) {
             delete transfers[ndx];
+            transfers[ndx] = 0;
+        }
     }
     curl_multi_cleanup(multi);
     if (!final) {
